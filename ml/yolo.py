@@ -1,6 +1,8 @@
 import random
+
 import torch
 from numpy import random
+
 from models.experimental import attempt_load
 from utils.datasets import LoadImages
 from utils.general import check_img_size, non_max_suppression, scale_coords

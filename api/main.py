@@ -1,13 +1,13 @@
-from fastapi import Depends, FastAPI, HTTPException, File, UploadFile, Response
-from sqlalchemy.orm import Session
 from uuid import uuid4, UUID
 
-from database import crud
-from database import models, schemas
-from database import SessionLocal, engine
-from worker.main import celery_app
+from fastapi import Depends, FastAPI, UploadFile, Response
+from sqlalchemy.orm import Session
 
 from config import UPLOAD_DIRECTORY
+from database import SessionLocal, engine
+from database import crud
+from database import models, schemas
+from worker import app as celery_app
 
 models.Base.metadata.create_all(bind=engine)
 

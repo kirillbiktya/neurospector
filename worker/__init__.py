@@ -1,10 +1,12 @@
-
-from celery import Celery
-from config import DB_URL
-from database import SessionLocal, engine
 from uuid import uuid4
 
+from celery import Celery
+
+from config import DB_URL
+from config import NN_MODEL_PATH
+from database import SessionLocal, engine
 from database import schemas, models
+from ml.yolo import Detector
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -17,7 +19,8 @@ app = Celery(
 
 
 @app.task
-def predict(image: schemas.Image):  # TODO
+def predict(image: schemas.Image):
+    detector = Detector(NN_MODEL_PATH)
     db = SessionLocal()
     classes = db.query(models.Class.id).all()
     classes = [x[0] for x in classes]
