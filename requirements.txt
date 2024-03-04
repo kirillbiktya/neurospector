@@ -1,6 +1,6 @@
 # Project requirements
 fastapi
-celery[librabbitmq,sqlalchemy]
+celery[sqlalchemy]
 sqlalchemy
 pydantic
 psycopg2
