@@ -26,4 +26,4 @@ class Image(BaseModel):
     id: UUID4
     path: str
     processed: bool = False
-    predictions: Optional[list[Prediction]] = None
+    predictions: Optional[list[Prediction]] = []
