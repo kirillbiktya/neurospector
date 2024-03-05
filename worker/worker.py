@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from config import NN_MODEL_PATH
 from database import SessionLocal, engine
-from database import schemas, models
+from database import schemas, models, crud
 from ml.yolo import Detector
 from . import app
 
@@ -14,10 +14,14 @@ detector = Detector(NN_MODEL_PATH)
 @app.task
 def predict(image_id: str):
     db = SessionLocal()
-    classes = db.query(models.Class.id).all()
+
+    classes = crud.get_classes(db)
     classes = [x[0] for x in classes]
-    image = db.query(models.Image).filter(models.Image.id == image_id).first()
+
+    image = crud.get_image(db, image_id)
+
     result = detector.detect(image.path, classes)
+
     for i in result:
         db_prediction = models.Prediction(
             id=uuid4(),
@@ -29,6 +33,8 @@ def predict(image_id: str):
             class_id=i['class'],
             confidence=i['confidence']
         )
-        db.add(db_prediction)
-    db.commit()
+        crud.create_prediction(db, db_prediction)
+
+    crud.mark_image_as_processed(db, image_id)
+    
     return len(result)
