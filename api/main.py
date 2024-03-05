@@ -26,7 +26,7 @@ def get_db():
 @app.post("/image", response_model=schemas.Image)
 def create_image(file: UploadFile, db: Session = Depends(get_db)):  # TODO: может, все же лучше возвращать таск?
     image_id = uuid4()
-    db_image = schemas.Image(id=image_id, path=UPLOAD_DIRECTORY + str(image_id) + '.jpg')
+    db_image = schemas.Image(id=image_id, path=UPLOAD_DIRECTORY + str(image_id) + '.jpg', processed=False)
 
     try:
         contents = file.file.read()
@@ -38,7 +38,7 @@ def create_image(file: UploadFile, db: Session = Depends(get_db)):  # TODO: мо
         file.file.close()
 
     crud.create_image(db, db_image)
-    celery_app.send_task("worker.predict", args=[db_image])
+    celery_app.send_task("worker.worker.predict", args=[db_image])
 
     return db_image
 

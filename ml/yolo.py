@@ -84,13 +84,13 @@ class Detector:
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
                     for *xyxy, conf, cls in reversed(det):
                         results.append(
-                                {
-                                    'confidence': float(conf.item()),
-                                    'class': int(cls.item()),
-                                    'coords': {
-                                        'x1': float(xyxy[0]), 'y1': float(xyxy[1]),
-                                        'x2': float(xyxy[2]), 'y2': float(xyxy[3])
-                                    }
+                            {
+                                'confidence': float(conf.item()),
+                                'class': int(cls.item()),
+                                'coords': {
+                                    'x1': float(xyxy[0]), 'y1': float(xyxy[1]),
+                                    'x2': float(xyxy[2]), 'y2': float(xyxy[3])
                                 }
+                            }
                         )
         return results
