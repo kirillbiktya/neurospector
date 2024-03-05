@@ -26,7 +26,7 @@ def get_db():
 @app.post("/image", response_model=schemas.Image)
 def create_image(file: UploadFile, db: Session = Depends(get_db)):  # TODO: может, все же лучше возвращать таск?
     image_id = uuid4()
-    db_image = schemas.Image(id=image_id, path=UPLOAD_DIRECTORY + str(image_id) + '.jpg', processed=False)
+    db_image = schemas.Image(id=image_id, path=UPLOAD_DIRECTORY + str(image_id) + '.jpg')
 
     try:
         contents = file.file.read()

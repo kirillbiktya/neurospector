@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, UUID4
 
 
@@ -23,5 +25,5 @@ class Prediction(BaseModel):
 class Image(BaseModel):
     id: UUID4
     path: str
-    processed: bool | None
-    predictions: list[Prediction] | None
+    processed: bool = False
+    predictions: Optional[list[Prediction]]
