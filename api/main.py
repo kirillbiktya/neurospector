@@ -38,7 +38,7 @@ def create_image(file: UploadFile, db: Session = Depends(get_db)):  # TODO: мо
         file.file.close()
 
     crud.create_image(db, db_image)
-    celery_app.send_task("worker.worker.predict", args=[db_image])
+    celery_app.send_task("worker.worker.predict", args=[str(db_image.id)])
 
     return db_image
 

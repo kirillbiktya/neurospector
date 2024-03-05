@@ -12,10 +12,11 @@ detector = Detector(NN_MODEL_PATH)
 
 
 @app.task
-def predict(image: schemas.Image):
+def predict(image_id: str):
     db = SessionLocal()
     classes = db.query(models.Class.id).all()
     classes = [x[0] for x in classes]
+    image = db.query(models.Image).filter(models.Image.id == image_id).first()
     result = detector.detect(image.path, classes)
     for i in result:
         db_prediction = models.Prediction(
