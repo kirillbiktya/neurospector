@@ -6,6 +6,7 @@ pydantic
 psycopg2
 uvicorn
 python-multipart
+boto3
 
 # YOLO requirements
 matplotlib>=3.2.2
